@@ -3,47 +3,42 @@ import Nav from './Nav'
 import Home from './Home'
 import NewPost from './NewPost'
 import PostPage from './PostPage'
+import EditPost from './EditPost'
 import About from './About'
 import Missing from './Missing'
 import Footer from './Footer'
-import { Route, Switch, useHistory } from 'react-router-dom/cjs/react-router-dom'
+import { Route, Switch, useHistory } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { format } from 'date-fns'
+import api from '../api/posts'
+import responseError from '../api/responseError'
 
 export default function App() {
 
-  const [posts, setPosts] = useState([
-    {
-      id: 1,
-      title: "My First Post",
-      datetime: "July 01, 2021 11:17:36 AM",
-      body: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis consequatur expedita, assumenda similique non optio! Modi nesciunt excepturi corrupti atque blanditiis quo nobis, non optio quae possimus illum exercitationem ipsa!"
-    },
-    {
-      id: 2,
-      title: "My 2nd Post",
-      datetime: "July 01, 2021 11:17:36 AM",
-      body: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis consequatur expedita, assumenda similique non optio! Modi nesciunt excepturi corrupti atque blanditiis quo nobis, non optio quae possimus illum exercitationem ipsa!"
-    },
-    {
-      id: 3,
-      title: "My 3rd Post",
-      datetime: "July 01, 2021 11:17:36 AM",
-      body: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis consequatur expedita, assumenda similique non optio! Modi nesciunt excepturi corrupti atque blanditiis quo nobis, non optio quae possimus illum exercitationem ipsa!"
-    },
-    {
-      id: 4,
-      title: "My Fourth Post",
-      datetime: "July 01, 2021 11:17:36 AM",
-      body: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis consequatur expedita, assumenda similique non optio! Modi nesciunt excepturi corrupti atque blanditiis quo nobis, non optio quae possimus illum exercitationem ipsa!"
-    }
-  ]);
+  const [posts, setPosts] = useState([]);
 
   const [search, setSearch] = useState('')
   const [searchResults, setSearchResults] = useState('')
   const [postTitle, setPostTitle] = useState('')
   const [postBody, setPostBody] = useState('')
+  const [editPostTitle, setEditPostTitle] = useState('')
+  const [editPostBody, setEditPostBody] = useState('')
   const history = useHistory()
+
+  useEffect(() => {
+    const fetchPost = async () => {
+
+      try {
+        const response = await api.get('/posts')
+        if (response && response.data) setPosts(response.data)
+      } catch (error) {
+        responseError(error)
+      }
+
+    }
+
+    fetchPost()
+  }, [])
 
   useEffect(() => {
 
@@ -51,20 +46,22 @@ export default function App() {
       return post.title.toLowerCase().includes(search.toLowerCase())
         || post.body.toLowerCase().includes(search.toLowerCase())
     })
-
     setSearchResults(filteredResults)
 
   }, [posts, search]);
 
-
-
-  const handleDelete = (postID) => {
-    const newPost = posts.filter(post => post.id !== postID)
-    setPosts(newPost)
-    history.push('/')
+  const handleDelete = async (postID) => {
+    try {
+      await api.delete(`/posts/${postID}`)
+      const newPost = posts.filter(post => post.id !== postID)
+      setPosts(newPost)
+      history.push('/')
+    } catch (error) {
+      responseError(error)
+    }
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     const id = posts.length ? posts[(posts.length - 1)].id + 1 : 1;
     const newPost = {
@@ -73,10 +70,35 @@ export default function App() {
       datetime: format(new Date(), ' MMM dd, yyy pp'),
       body: postBody
     }
-    setPosts([...posts, newPost])
-    setPostTitle('')
-    setPostBody('')
-    history.push('/')
+
+    try {
+      const response = await api.post('/posts', newPost)
+      setPosts([...posts, response.data])
+      setPostTitle('')
+      setPostBody('')
+      history.push('/')
+    } catch (error) {
+      responseError(error)
+    }
+  }
+
+  const handleEdit = async (postID) => {
+    const updatedPost = {
+      id: postID,
+      title: editPostTitle,
+      datetime: format(new Date(), ' MMM dd, yyy pp'),
+      body: editPostBody
+    }
+
+    try {
+      const response = await api.put(`/posts/${postID}`, updatedPost)
+      setPosts(posts.map(post => post.id === postID ? { ...response.data } : post))
+      setEditPostTitle('')
+      setEditPostBody('')
+      history.push('/')
+    } catch (error) {
+      console.log(`Error: ${error.message}`)
+    }
   }
 
   return (
@@ -110,6 +132,17 @@ export default function App() {
           <PostPage
             posts={posts}
             handleDelete={handleDelete}
+          />
+        </Route>
+
+        <Route path="/edit/:id" >
+          <EditPost
+            posts={posts}
+            editPostTitle={editPostTitle}
+            editPostBody={editPostBody}
+            setEditPostTitle={setEditPostTitle}
+            setEditPostBody={setEditPostBody}
+            handleEdit={handleEdit}
           />
         </Route>
 

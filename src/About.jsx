@@ -6,10 +6,10 @@ export default function About() {
       <p>This is a Blogging website build with React JS library. This is a react js project build on {format(new Date(2023, 4, 14), 'dd MMM, yyy')}.</p>
       <br />
       <hr />
-      <img src="../public/Zawad.jpg" style={{
+      <img src="../public/zawad.png" style={{
         width: "240px",
         padding: '1rem 0 0.2rem 0',
-        borderRadius: '15%'
+        borderRadius: '7%'
       }} />
 
       <p>Name: Zawad Bin Sharif</p>

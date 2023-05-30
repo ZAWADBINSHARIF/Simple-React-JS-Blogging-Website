@@ -212,13 +212,26 @@ body {
   margin-bottom: 1rem;
 }
 
-.PostPage button {
+.deleteButton {
   height: 48px;
   min-width: 48px;
   border-radius: 0.25rem;
   padding: 0.5rem;
   font-size: 1rem;
   background-color: red;
+  margin-right: 1rem;
+  color: #fff;
+  cursor: pointer;
+}
+
+.editButton {
+  height: 48px;
+  min-width: 48px;
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  font-size: 1rem;
+  background-color: #333333;
+  margin-right: 1rem;
   color: #fff;
   cursor: pointer;
 }
