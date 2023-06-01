@@ -3,7 +3,7 @@ import { format } from "date-fns";
 export default function About() {
   return (
     <main className="About">
-      <p>This is a Blogging website build with React JS library. This is a react js project build on {format(new Date(2023, 4, 14), 'dd MMM, yyy')}.</p>
+      <p>This is a Blogging website built with React JS library. This is a react js project built on {format(new Date(2023, 4, 14), 'dd MMM, yyy')}.</p>
       <br />
       <hr />
       <img src="../public/zawad.png" style={{

@@ -18,7 +18,6 @@ import useAxiosFetch from './hooks/useAxiosFetch'
 export default function App() {
 
   const [posts, setPosts] = useState([]);
-
   const [search, setSearch] = useState('')
   const [searchResults, setSearchResults] = useState('')
   const [postTitle, setPostTitle] = useState('')
