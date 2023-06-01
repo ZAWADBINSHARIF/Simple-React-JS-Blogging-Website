@@ -12,6 +12,8 @@ import { useEffect, useState } from 'react'
 import { format } from 'date-fns'
 import api from '../api/posts'
 import responseError from '../api/responseError'
+import useWindowSize from './hooks/useWindowsSize'
+import useAxiosFetch from './hooks/useAxiosFetch'
 
 export default function App() {
 
@@ -24,21 +26,12 @@ export default function App() {
   const [editPostTitle, setEditPostTitle] = useState('')
   const [editPostBody, setEditPostBody] = useState('')
   const history = useHistory()
+  const { width } = useWindowSize()
+  const { data, fetchError, isLoading } = useAxiosFetch('http://localhost:9999/posts')
 
   useEffect(() => {
-    const fetchPost = async () => {
-
-      try {
-        const response = await api.get('/posts')
-        if (response && response.data) setPosts(response.data)
-      } catch (error) {
-        responseError(error)
-      }
-
-    }
-
-    fetchPost()
-  }, [])
+    setPosts(data)
+  }, [data])
 
   useEffect(() => {
 
@@ -103,11 +96,12 @@ export default function App() {
 
   return (
     <div className='App'>
-      <Header title="React Blog" />
+      <Header title="React Blog"
+        width={width}
+      />
       <Nav
         search={search}
         setSearch={setSearch}
-
       />
 
       <Switch>
@@ -115,6 +109,8 @@ export default function App() {
         <Route exact path="/">
           <Home
             posts={searchResults}
+            isLoading={isLoading}
+            fetchError={fetchError}
           />
         </Route>
 
