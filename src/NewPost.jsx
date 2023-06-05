@@ -1,6 +1,10 @@
-export default function NewPost({
-    postTitle, postBody, setPostTitle, setPostBody, handleSubmit
-}) {
+import { useContext } from "react"
+import DataContext from "./context/DataContext"
+
+export default function NewPost() {
+
+    const { postTitle, postBody, setPostTitle, setPostBody, handleSubmit } = useContext(DataContext)
+
     return (
         <main className="NewPost">
             <form className="newPostForm" onSubmit={handleSubmit}>

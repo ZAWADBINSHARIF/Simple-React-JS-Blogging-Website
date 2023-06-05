@@ -1,6 +1,10 @@
 import { Link, useParams } from "react-router-dom/cjs/react-router-dom.min"
+import { useContext } from "react";
+import DataContext from "./context/DataContext";
 
-export default function PostPage({ posts, handleDelete }) {
+export default function PostPage() {
+
+    const {posts, handleDelete} = useContext(DataContext)
 
     const { id } = useParams();
     const post = posts.find(post => (post.id).toString() === id);
@@ -25,7 +29,7 @@ export default function PostPage({ posts, handleDelete }) {
                 {!post &&
                     <>
                     <p>Post not found</p>
-                    <p>Well, that's disappointing.</p>
+                    <p>{`Well, that's disappointing.`}</p>
                     <p>
                         <Link to='/'>Go back to the Homepage</Link>
                     </p>

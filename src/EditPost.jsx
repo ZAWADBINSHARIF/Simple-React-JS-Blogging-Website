@@ -1,14 +1,15 @@
-import { useEffect } from "react"
+import { useEffect, useContext } from "react"
 import { useParams, Link } from "react-router-dom"
+import DataContext from "./context/DataContext"
 
-export default function EditPost({
-    posts, editPostTitle, setEditPostTitle, editPostBody, setEditPostBody, handleEdit
-}) {
+export default function EditPost() {
+
+    const { posts,
+        editPostTitle, setEditPostTitle, editPostBody, setEditPostBody,
+        handleEdit } = useContext(DataContext)
 
     const { id } = useParams()
     const post = posts.find(post => post.id.toString() === id)
-
-    // console.log(post)
 
     useEffect(() => {
         if (post) {
@@ -19,9 +20,9 @@ export default function EditPost({
 
     return (
         <main className="NewPost">
-            {(editPostTitle && editPostBody)?
+            {(editPostTitle && editPostBody) ?
                 <>
-                    <form className="newPostForm" onSubmit={(e) =>{
+                    <form className="newPostForm" onSubmit={(e) => {
                         e.preventDefault()
                         handleEdit(post.id)
                     }
