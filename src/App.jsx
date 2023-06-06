@@ -16,8 +16,9 @@ export default function App() {
   return (
     <div className='App'>
 
+      <Header title="React Blog" />
+      
       <DataProvider>
-        <Header title="React Blog" />
         <Nav />
 
         <Switch>

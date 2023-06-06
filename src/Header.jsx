@@ -1,11 +1,11 @@
+import propTypes from 'prop-types'
 import { FaMobileAlt, FaTabletAlt, FaLaptop } from 'react-icons/fa'
-import { useContext } from 'react'
-import DataContext from './context/DataContext'
+import useWindowSize from './hooks/useWindowsSize'
 
 
 export default function Header({ title }) {
 
-    const {width} = useContext(DataContext)
+    const { width } = useWindowSize();
 
     return (
         <header className="Header">
@@ -17,4 +17,8 @@ export default function Header({ title }) {
             }</p>
         </header>
     )
+}
+
+Header.propTypes = {
+    title: propTypes.string
 }

@@ -1,6 +1,7 @@
+import propTypes from 'prop-types'
 import { Link } from "react-router-dom/cjs/react-router-dom.min"
 
-function Post({post}) {
+function Post({ post }) {
   return (
       <article className="post">
           <Link to={`/post/${post.id}`}>
@@ -16,4 +17,9 @@ function Post({post}) {
     </article>
   )
 }
+
+Post.propTypes = {
+  post: propTypes.object
+}
+
 export default Post

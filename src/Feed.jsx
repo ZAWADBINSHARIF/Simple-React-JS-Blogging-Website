@@ -1,3 +1,4 @@
+import propTypes from 'prop-types'
 import Post from './Post'
 
 export default function Feed({ posts }) {
@@ -8,4 +9,8 @@ export default function Feed({ posts }) {
           ))}
       </div>
   )
+}
+
+Feed.propTypes = {
+    posts: propTypes.array
 }

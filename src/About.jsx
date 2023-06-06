@@ -6,7 +6,7 @@ export default function About() {
       <p>This is a Blogging website built with React JS library. This is a react js project built on {format(new Date(2023, 4, 14), 'dd MMM, yyy')}.</p>
       <br />
       <hr />
-      <img src="../public/zawad.png" style={{
+      <img src="./zawad.png" style={{
         width: "240px",
         padding: '1rem 0 0.2rem 0',
         borderRadius: '7%'
